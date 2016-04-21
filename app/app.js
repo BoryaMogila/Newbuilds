@@ -13,10 +13,11 @@ let app = koa();
 
 bodyparser(app);
 render(app, config);
+app.use(serve(__dirname + '/../public'));
 
-app.use(mount('/graphql', graphqlHTTP({ schema: schema, graphiql: true })));
+app.use(mount('/graphql', graphqlHTTP({ schema: schema, graphiql: true})));
 
-//router(app);
+router(app);
 
 
 
