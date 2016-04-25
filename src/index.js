@@ -6,7 +6,7 @@ import { Router, browserHistory } from 'react-router';
 import promise from 'redux-promise';
 
 
-import clientGraphQl from './middelwares/clientGraphQl'
+import clientGraphQl from './middleware/clientGraphQl'
 import routes from './routes';
 import reducers from './reducers';
 
@@ -16,7 +16,6 @@ const store = createStore(
     initialState,
     applyMiddleware(clientGraphQl, promise)
 );
-console.log(initialState);
 
 ReactDOM.render(
     <Provider store={store}>

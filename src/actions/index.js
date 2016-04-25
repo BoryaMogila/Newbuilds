@@ -20,13 +20,13 @@ export function getCities(){
     }
 }
 
-export function getNewbuilds(tableName, limit, offset){
+export function getNewbuilds(tableName, limit, offset, checked){
     return {
         type: actionsTypes.GET_NEWBUILDS,
         graphQl: true,
         payload: {
             query: `{
-                      newbuilds(tableName: "${tableName}", limit: ${limit}, offset: ${offset}){
+                      newbuilds(tableName: "${tableName}", limit: ${limit}, offset: ${offset}, checked: "${checked}"){
                         newbuildId,
                         lunLink,
                         name,
@@ -40,13 +40,13 @@ export function getNewbuilds(tableName, limit, offset){
 
     }
 }
-export function getCount (tableName){
+export function getCount (tableName, checked){
     return {
         type: actionsTypes.GET_COUNT,
         graphQl: true,
         payload: {
             query: `{
-                      count(tableName: "${tableName}")
+                      count(tableName: "${tableName}", checked: "${checked}")
                     }`
         }
 
@@ -95,5 +95,13 @@ export function saveNewbuild(tableName, newbuild){
                     }`
         }
 
+    }
+}
+
+export function changeChecked(checked){
+
+    return {
+        type: actionsTypes.CHANGE_CHECKED,
+        payload: checked
     }
 }

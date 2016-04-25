@@ -33,12 +33,14 @@ class Cities extends Component {
     }
     render() {
         return (
-            <ul className="sidebar-nav" key={this.props.city.cityId}>
-                <li className="sidebar-brand">
-                    <a href="#">Города Украины</a>
-                </li>
-                {this.renderCities()}
-            </ul>
+            <div>
+                <ul className="sidebar-nav" key={this.props.city.cityId}>
+                    <li className="sidebar-brand">
+                        <a href="#">Города Украины</a>
+                    </li>
+                    {this.renderCities()}
+                </ul>
+            </div>
         );
     }
 }

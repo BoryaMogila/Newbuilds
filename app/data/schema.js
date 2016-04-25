@@ -153,7 +153,12 @@ const Query = new GraphQLObjectType({
                     offset: {
                         type: GraphQLInt
                     },
-                    ids: {type: new GraphQLList(GraphQLInt)}
+                    ids: {
+                        type: new GraphQLList(GraphQLInt)
+                    },
+                    checked: {
+                        type: GraphQLString
+                    }
                 },
                 resolve(root, args){
                     let where = ` WHERE `;
@@ -162,22 +167,37 @@ const Query = new GraphQLObjectType({
                     let limit = args.limit ? ` LIMIT ${Number(args.limit)} ` : ``;
 
                     let offset = args.offset ? ` OFFSET ${Number(args.offset)} ` : ``;
+                    let checked = ``;
 
-                    let qs = `SELECT a.newbuildId, a.name, a.contact, a.lunLink, a.checked, a.coment
-                    FROM lun_base.${args.tableName} a ${limit} ${offset}`;
-                    query(qs, [], 'master').then((data) => {
-                        console.log(data.length);
-                    })
+                    if(Number(args.checked)){
+                        checked = ` WHERE checked=${Number(args.checked)} `;
+                    } else if(args.checked == 'notChecked'){
+                        checked = ` WHERE !checked `;
+                    }
+                    let qs = `SELECT a.newbuildId, a.name, a.contact, a.lunLink, a.checked, a.coment, a.date
+                    FROM lun_base.${args.tableName} a ${checked} ${limit} ${offset}`;
+
                     return query(qs, [], 'master');
                 }
             },
             count: {
                 type: GraphQLString,
                 args:{
-                    tableName: {type: GraphQLString}
+                    tableName: {
+                        type: GraphQLString
+                    },
+                    checked: {
+                        type: GraphQLString
+                    }
                 },
                 resolve(_, args){
-                    let qs = `SELECT count(*) as count from lun_base.${args.tableName}`;
+                    let checked = ``;
+                    if(Number(args.checked)){
+                        checked = ` WHERE checked=${Number(args.checked)} `;
+                    } else if(args.checked == 'notChecked'){
+                        checked = ` WHERE !checked `;
+                    }
+                    let qs = `SELECT count(*) as count from lun_base.${args.tableName} ${checked}`;
                     return query(qs, [], 'master').then((data) => data[0].count);
                 }
             }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import {connect} from 'react-redux';
 import { changeNewbuild, saveNewbuild } from '../actions/index';
+import moment from 'moment';
 
 export default class Newbuild extends Component {
     constructor(props) {
@@ -62,6 +63,7 @@ export default class Newbuild extends Component {
                         <option value="5">Отстрочка запуска</option>
                         <option value="6">Назначе звонок</option>
                     </select>
+                    <p>{moment(new Date(this.props.newbuild.date)).format('DD-MM-YYYY')}</p>
                 </td>
                 <td>
                     <textarea

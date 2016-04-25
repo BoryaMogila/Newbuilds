@@ -35,7 +35,7 @@ export default class Newbuilds extends Component {
         const limit = element.eventKey * 25;
         const offset = (element.eventKey - 1) * 25;
         this.props.selectPage(element.eventKey);
-        this.props.getNewbuilds(this.props.city.tableName, limit, offset);
+        this.props.getNewbuilds(this.props.city.tableName, limit, offset, this.props.checked.value);
     }
     render() {
         return (
@@ -75,7 +75,8 @@ function mapStateToProps(state){
     return {
         city: state.city,
         newbuilds: state.newbuilds,
-        count: state.count
+        count: state.count,
+        checked: state.checked
     }
 
 }

@@ -5,3 +5,4 @@ export const CHANGE_NEWBUILD = 'CHANGE_NEWBUILD';
 export const SAVE_NEWBUILD = 'SAVE_NEWBUILD';
 export const GET_COUNT = 'GET_COUNT';
 export const SELECT_PAGE = 'SELECT_PAGE';
+export const CHANGE_CHECKED = 'CHANGE_CHECKED';
