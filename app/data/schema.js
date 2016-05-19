@@ -68,7 +68,6 @@ let Newbuild = new GraphQLObjectType({
             checked: {
                 type: GraphQLInt,
                 resolve(newbuild){
-                    console.log(newbuild);
                     return newbuild._source.checked;
                 }
             },
@@ -237,7 +236,6 @@ const Query = new GraphQLObjectType({
                             }
                         });
                     }
-                    console.log(args.checked);
                     if(args.checked){
                         must.push({
                             match_phrase: {

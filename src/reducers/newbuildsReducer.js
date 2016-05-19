@@ -32,7 +32,6 @@ export default function(state = [], action){
                 coment: action.payload.data.data.updateNewbuild.coment,
                 changed: 0
             };
-            console.log(chengedNewbuild);
             const ind = state.findIndex((item) => item.newbuildId === chengedNewbuild.newbuildId);
             return [
                 ...state.slice(0, ind),
