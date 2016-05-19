@@ -24,9 +24,10 @@ class Cities extends Component {
         return this.props.city.cityId == cityId ? 'selected' : '';
     }
     renderCities(){
-        return  this.props.cities.map((city) => {
+        return  this.props.cities.map((city, index) => {
+            city.cityId = index;
             return (
-                <CityLink key={city.cityId} city={city} selectedCity={this.props.city} />
+                <CityLink key={index} city={city} selectedCity={this.props.city} />
 
             );
         })

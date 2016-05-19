@@ -1,4 +1,9 @@
 import query from 'mysql-query-promise';
+import { Client } from 'elasticsearch';
+
+const client = new Client({
+    host: 'localhost:9200'
+})
 
 import {
     GraphQLSchema,
@@ -16,22 +21,10 @@ let City = new GraphQLObjectType({
     name: 'City',
     fields: () => {
         return {
-            cityId: {
-                type: GraphQLInt,
-                resolve(city){
-                    return city.cityId;
-                }
-            },
             cityName: {
                 type: GraphQLString,
                 resolve(city){
-                    return city.cityName;
-                }
-            },
-            tableName: {
-                type: GraphQLString,
-                resolve(city){
-                    return city.tableName;
+                    return city.key;
                 }
             }
         }
@@ -45,43 +38,50 @@ let Newbuild = new GraphQLObjectType({
             newbuildId: {
                 type: GraphQLInt,
                 resolve(newbuild){
-                    return newbuild.newbuildId;
+                    return newbuild._id;
                 }
             },
             name: {
                 type: GraphQLString,
                 resolve(newbuild){
-                    return newbuild.name;
+                    return newbuild._source.name;
                 }
             },
             contact: {
                 type: GraphQLString,
                 resolve(newbuild){
-                    return newbuild.contact;
+                    return newbuild._source.contact;
                 }
             },
             lunLink: {
                 type: GraphQLString,
                 resolve(newbuild){
-                    return newbuild.lunLink;
+                    return newbuild._source.lunLink;
                 }
             },
             date: {
                 type: GraphQLString,
                 resolve(newbuild){
-                    return newbuild.date;
+                    return newbuild._source.date;
                 }
             },
             checked: {
                 type: GraphQLInt,
                 resolve(newbuild){
-                    return newbuild.checked;
+                    console.log(newbuild);
+                    return newbuild._source.checked;
                 }
             },
             coment: {
                 type: GraphQLString,
                 resolve(newbuild){
-                    return newbuild.coment;
+                    return newbuild._source.coment;
+                }
+            },
+            cityName: {
+                type: GraphQLString,
+                resolve(newbuild){
+                    return newbuild._source.cityName;
                 }
             }
         }
@@ -105,24 +105,27 @@ const Mutation = new GraphQLObjectType({
                 newbuildId: {
                     name: 'newbuildId',
                     type: GraphQLString
-                },
-                tableName: {
-                    name: 'tableName',
-                    type: GraphQLString
                 }
             },
             resolve(_, args){
-                let qs = `UPDATE ${args.tableName} SET `;
-                qs += ` checked=${Number(args.checked)}, `;
-                qs += ` coment='${args.coment}' `;
-                qs += ` WHERE newbuildId=LAST_INSERT_ID(${Number(args.newbuildId)});`;
-                return query(qs, [], 'master').then((res) => {
-                    return {
-                        newbuildId: res.insertId,
-                        checked: Number(args.checked),
-                        coment: args.coment
+                return client.update({
+                    index: 'lun',
+                    type: 'newbuilds',
+                    id: args.newbuildId,
+                    body: {
+                        doc: {
+                            checked: args.checked,
+                            coment: args.coment
+                        }
                     }
-
+                }).then((res) => {
+                    return {
+                        _id: res._id,
+                        _source:{
+                            checked: Number(args.checked),
+                            coment: args.coment
+                        }
+                    }
                 })
             }
         }
@@ -136,15 +139,29 @@ const Query = new GraphQLObjectType({
             cities: {
                 type: new GraphQLList(City),
                 resolve(root, args){
-
-                    let qs = `SELECT * FROM lun_base.newbuildCities`;
-                    return query(qs, [], 'master');
+                    return client.search({
+                        index: 'lun',
+                        type: 'newbuilds',
+                        body: {
+                            "aggs": {
+                                "cityName": {
+                                    "terms": {
+                                        "field": "city",
+                                        "size": 0,
+                                        "order" : { "_term" : "asc" }
+                                    }
+                                }
+                            }
+                        }
+                    }).then((res)=>{
+                        return res.aggregations.cityName.buckets;
+                    });
                 }
             },
             newbuilds: {
                 type: new GraphQLList(Newbuild),
                 args: {
-                    tableName: {
+                    cityName: {
                         type: GraphQLString
                     },
                     limit: {
@@ -153,37 +170,57 @@ const Query = new GraphQLObjectType({
                     offset: {
                         type: GraphQLInt
                     },
-                    ids: {
-                        type: new GraphQLList(GraphQLInt)
-                    },
                     checked: {
                         type: GraphQLString
                     }
                 },
                 resolve(root, args){
-                    let where = ` WHERE `;
-                    where += args.ids ? `id IN (${args.ids}) `: ``;
-
-                    let limit = args.limit ? ` LIMIT ${Number(args.limit)} ` : ``;
-
-                    let offset = args.offset ? ` OFFSET ${Number(args.offset)} ` : ``;
-                    let checked = ``;
-
-                    if(Number(args.checked)){
-                        checked = ` WHERE checked=${Number(args.checked)} `;
-                    } else if(args.checked == 'notChecked'){
-                        checked = ` WHERE !checked `;
+                    let query = {},
+                        must  = [];
+                    if(args.cityName){
+                        must.push({
+                            match_phrase: {
+                                cityName: args.cityName
+                            }
+                        });
                     }
-                    let qs = `SELECT a.newbuildId, a.name, a.contact, a.lunLink, a.checked, a.coment, a.date
-                    FROM lun_base.${args.tableName} a ${checked} ${limit} ${offset}`;
+                    if(args.checked ){
+                        must.push({
+                            match_phrase: {
+                                checked: args.checked
+                            }
+                        });
+                    }
+                    if(must.length){
+                        query = {
+                                bool: {
+                                    must
+                                }
+                            };
+                    } else {
+                        query = {
+                                match_all: {}
+                            };
+                    }
 
-                    return query(qs, [], 'master');
+                    return client.search({
+                        index: 'lun',
+                        type: 'newbuilds',
+                        body: {
+                            query,
+                            size: args.limit ? args.limit : 25,
+                            from: args.offset ? args.offset : 0
+                        }
+                    }).then((res)=>{
+
+                        return res.hits.hits;
+                    });
                 }
             },
             count: {
                 type: GraphQLString,
                 args:{
-                    tableName: {
+                    cityName: {
                         type: GraphQLString
                     },
                     checked: {
@@ -191,14 +228,46 @@ const Query = new GraphQLObjectType({
                     }
                 },
                 resolve(_, args){
-                    let checked = ``;
-                    if(Number(args.checked)){
-                        checked = ` WHERE checked=${Number(args.checked)} `;
-                    } else if(args.checked == 'notChecked'){
-                        checked = ` WHERE !checked `;
+                    let query = {},
+                        must  = [];
+                    if(args.cityName){
+                        must.push({
+                            match_phrase: {
+                                cityName: args.cityName
+                            }
+                        });
                     }
-                    let qs = `SELECT count(*) as count from lun_base.${args.tableName} ${checked}`;
-                    return query(qs, [], 'master').then((data) => data[0].count);
+                    console.log(args.checked);
+                    if(args.checked){
+                        must.push({
+                            match_phrase: {
+                                checked: args.checked
+                            }
+                        });
+                    }
+                    if(must.length){
+                        query = {
+                            bool: {
+                                must
+                            }
+                        };
+                    } else {
+                        query = {
+                            match_all: {}
+                        };
+                    }
+
+                    return client.search({
+                        index: 'lun',
+                        type: 'newbuilds',
+                        body: {
+                            query,
+                            size: 0
+                        }
+                    }).then((res)=>{
+
+                        return res.hits.total;
+                    });
                 }
             }
 

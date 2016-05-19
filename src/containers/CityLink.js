@@ -16,8 +16,8 @@ class CityLink extends Component {
     }
     changeCity(){
         this.props.changeCity(this.props.city);
-        this.props.getNewbuilds(this.props.city.tableName, 25, 0, this.props.checked.value);
-        this.props.getCount(this.props.city.tableName, this.props.checked.value);
+        this.props.getNewbuilds(this.props.city.cityName, 25, 0, this.props.checked.value);
+        this.props.getCount(this.props.city.cityName, this.props.checked.value);
     }
 
     render() {

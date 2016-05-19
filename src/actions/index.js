@@ -10,9 +10,7 @@ export function getCities(){
         payload: {
             query: `{
                       cities{
-                        cityId,
-                        cityName,
-                        tableName
+                        cityName
                       }
                     }`
         }
@@ -20,13 +18,13 @@ export function getCities(){
     }
 }
 
-export function getNewbuilds(tableName, limit, offset, checked){
+export function getNewbuilds(cityName,limit, offset, checked){
     return {
         type: actionsTypes.GET_NEWBUILDS,
         graphQl: true,
         payload: {
             query: `{
-                      newbuilds(tableName: "${tableName}", limit: ${limit}, offset: ${offset}, checked: "${checked}"){
+                      newbuilds(cityName: "${cityName}",limit: ${limit}, offset: ${offset + (checked ? ', checked:"' + checked + '"': '')}){
                         newbuildId,
                         lunLink,
                         name,
@@ -40,13 +38,13 @@ export function getNewbuilds(tableName, limit, offset, checked){
 
     }
 }
-export function getCount (tableName, checked){
+export function getCount (cityName, checked){
     return {
         type: actionsTypes.GET_COUNT,
         graphQl: true,
         payload: {
             query: `{
-                      count(tableName: "${tableName}", checked: "${checked}")
+                      count(cityName: "${cityName + (checked ? '", checked:"' + checked + '"': '"')})
                     }`
         }
 
@@ -76,14 +74,13 @@ export function changeNewbuild(newbuild){
     }
 }
 
-export function saveNewbuild(tableName, newbuild){
+export function saveNewbuild(newbuild){
     return {
         type: actionsTypes.SAVE_NEWBUILD,
         graphQl: true,
         payload: {
             query: `mutation {
                       updateNewbuild(
-                         tableName: "${tableName}",
                          newbuildId: "${newbuild.newbuildId}",
                          checked: "${newbuild.checked}",
                          coment: "${newbuild.coment}"

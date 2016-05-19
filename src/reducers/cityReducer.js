@@ -1,9 +1,8 @@
 import {CHANGE_CITY} from '../actions/actionsTypes';
 
 const initialState = {
-    "cityId": 1,
-    "cityName": "все новостройки киева",
-    "tableName": "vse_novostroyki_kieva"
+    "cityId": 0,
+    "cityName": "все новостройки винницы"
 };
 export default function(state = initialState, action){
     switch (action.type){

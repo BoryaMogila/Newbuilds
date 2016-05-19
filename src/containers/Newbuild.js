@@ -7,7 +7,6 @@ import moment from 'moment';
 export default class Newbuild extends Component {
     constructor(props) {
         super(props);
-
         this.state =  {
             newbuildId: this.props.newbuild.newbuildId,
             checked: Number(this.props.newbuild.checked),
@@ -40,7 +39,7 @@ export default class Newbuild extends Component {
     }
 
     saveNewbuild(){
-        this.props.saveNewbuild(this.props.city.tableName, this.state);
+        this.props.saveNewbuild(this.state);
 
     }
 
@@ -67,7 +66,7 @@ export default class Newbuild extends Component {
                 </td>
                 <td>
                     <textarea
-                        defaultValue={this.state.coment}
+                        value={this.state.coment}
                         rows="4" cols="400"
                         className="form-control"
                         onChange={this.changeComent}></textarea>

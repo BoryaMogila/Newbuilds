@@ -15,17 +15,16 @@ export default class Newbuilds extends Component {
     }
     componentWillMount(){
         if(!this.props.count.pagesCount){
-            this.props.getCount(this.props.city.tableName);
+            this.props.getCount(this.props.city.cityName);
         }
         if(!this.props.newbuilds.length){
-            this.props.getNewbuilds(this.props.city.tableName, 25, 0);
+            this.props.getNewbuilds(this.props.city.cityName, 25, 0);
         }
 
     }
 
     renderNewbuilds(){
         return  this.props.newbuilds.map((newbuild) => {
-
             return (
                 <Newbuild key={newbuild.newbuildId} newbuild={newbuild} />
             );
@@ -35,7 +34,7 @@ export default class Newbuilds extends Component {
         const limit = element.eventKey * 25;
         const offset = (element.eventKey - 1) * 25;
         this.props.selectPage(element.eventKey);
-        this.props.getNewbuilds(this.props.city.tableName, limit, offset, this.props.checked.value);
+        this.props.getNewbuilds(this.props.city.cityName, limit, offset, this.props.checked.value);
     }
     render() {
         return (

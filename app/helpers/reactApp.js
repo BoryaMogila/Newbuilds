@@ -2,12 +2,8 @@ import React from 'react';
 import ReactDomServer from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { Router, memoryHistory, createMemoryHistory, match, RouterContext } from 'react-router';
-import promise from 'redux-promise';
-import clientGraphQl from './clientGraphQl';
+import { Router, match, RouterContext } from 'react-router';
 import fetchComponentData from './fetchComponentData';
-//import applyMiddleware from 'redux-wait';
-
 
 import routes from '../../src/routes';
 import reducers from '../../src/reducers';

@@ -35,8 +35,8 @@ export default class Wrapper extends Component {
 
     changeChecked(e){
         this.props.changeChecked(e.target.value);
-        this.props.getNewbuilds(this.props.city.tableName, 25, 0, e.target.value);
-        this.props.getCount(this.props.city.tableName, e.target.value);
+        this.props.getNewbuilds(this.props.city.cityName, 25, 0, e.target.value);
+        this.props.getCount(this.props.city.cityName, e.target.value);
 
     }
 
@@ -56,14 +56,14 @@ export default class Wrapper extends Component {
                             <label>
                                 Сортировать по ответу
                                 <select value={this.props.checked.value} className="form-control right"  onChange={this.changeChecked} >
-                                    <option value="all">Все</option>
-                                    <option value="notChecked">не провереные</option>
+                                    <option value="">Все</option>
+                                    <option value="0">не провереные</option>
                                     <option value="1">Нет денег</option>
                                     <option value="2">Все продали</option>
                                     <option value="3">Есть на DOM.RIA</option>
                                     <option value="4">В работе</option>
                                     <option value="5">Отстрочка запуска</option>
-                                    <option value="6">Назначе звонок</option>
+                                    <option value="6">Назначен звонок</option>
                                 </select>
                             </label>
                             <div className="col-lg-12">
@@ -89,7 +89,7 @@ function mapStateToProps(state){
 
 
 Wrapper.need = [
-    getCount("vse_novostroyki_kieva", 'all'), getCities(), getNewbuilds("vse_novostroyki_kieva", 25, 0, 'all')
+    getCount("все новостройки винницы"), getCities(), getNewbuilds("все новостройки винницы", 25, 0)
 ];
 
 export default connect(mapStateToProps, { changeChecked, getNewbuilds, getCount })(Wrapper);
