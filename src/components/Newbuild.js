@@ -1,7 +1,5 @@
 import React from 'react';
 import { Component } from 'react';
-import {connect} from 'react-redux';
-import { changeNewbuild, saveNewbuild } from '../actions/index';
 import moment from 'moment';
 
 export default class Newbuild extends Component {
@@ -47,7 +45,7 @@ export default class Newbuild extends Component {
         return (
             <tr key={this.props.newbuild.newbuildId}>
                 <td>
-                    <a href={this.props.newbuild.lunLink}>{this.props.newbuild.name}</a>
+                    <a target="_blank" href={this.props.newbuild.lunLink}>{this.props.newbuild.name}</a>
                 </td>
                 <td>
                     {this.props.newbuild.contact}
@@ -80,12 +78,3 @@ export default class Newbuild extends Component {
         );
     }
 }
-
-function mapStateToProps(state){
-    return {
-        city: state.city
-    }
-
-}
-
-export default connect(mapStateToProps, { changeNewbuild, saveNewbuild })(Newbuild);

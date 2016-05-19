@@ -1,10 +1,10 @@
 import React from 'react';
 import { Component } from 'react';
 import {connect} from 'react-redux';
-import { selectPage, getNewbuilds, getCount} from '../actions/index';
+import { selectPage, getNewbuilds, getCount, saveNewbuild} from '../actions/index';
 import {Pagination} from 'react-bootstrap';
 
-import Newbuild from './Newbuild';
+import Newbuild from './../components/Newbuild';
 
 
 export default class Newbuilds extends Component {
@@ -26,7 +26,7 @@ export default class Newbuilds extends Component {
     renderNewbuilds(){
         return  this.props.newbuilds.map((newbuild) => {
             return (
-                <Newbuild key={newbuild.newbuildId} newbuild={newbuild} />
+                <Newbuild key={newbuild.newbuildId} saveNewbuild={this.props.saveNewbuild} newbuild={newbuild} />
             );
         })
     }
@@ -79,4 +79,4 @@ function mapStateToProps(state){
     }
 
 }
-export default connect(mapStateToProps, { selectPage, getNewbuilds, getCount})(Newbuilds);
+export default connect(mapStateToProps, { saveNewbuild, selectPage, getNewbuilds, getCount})(Newbuilds);

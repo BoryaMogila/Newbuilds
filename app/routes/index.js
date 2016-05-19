@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import reactApp from '../helpers/reactApp'
+import reactApp from '../controllers/reactAppController'
 
 
 let router = Router();

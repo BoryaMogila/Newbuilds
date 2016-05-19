@@ -16,14 +16,6 @@ export default function(state = [], action){
                 }
             });
             return [...newbuilds];
-        case actionsTypes.CHANGE_NEWBUILD:
-            let newbuild = action.payload;
-            const index = state.findIndex((item) => item.newbuildId === newbuild.newbuildId);
-            return [
-                ...state.slice(0, index),
-                Object.assign({}, newbuild),
-                ...state.slice(index + 1)
-            ];
         case actionsTypes.SAVE_NEWBUILD:
 
             let chengedNewbuild = {

@@ -3,7 +3,7 @@ import { Component } from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router';
 
-import { getCities, changeCity } from '../actions/index';
+import { getCities } from '../actions/index';
 
 import CityLink from './CityLink'
 
@@ -53,4 +53,4 @@ function mapStateToProps(state){
     }
 
 }
-export default connect(mapStateToProps, {getCities, changeCity })(Cities);
+export default connect(mapStateToProps, {getCities})(Cities);

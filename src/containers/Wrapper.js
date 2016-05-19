@@ -1,8 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Cities from '../containers/Cities';
-import Newbuilds from '../containers/Newbuilds';
+import Cities from './Cities';
+import Newbuilds from './Newbuilds';
 import {getNewbuilds, changeChecked, getCount, getCities} from '../actions/index';
 
 

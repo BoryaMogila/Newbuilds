@@ -67,13 +67,6 @@ export function changeCity(city){
     }
 }
 
-export function changeNewbuild(newbuild){
-    return {
-        type: actionsTypes.CHANGE_NEWBUILD,
-        payload: newbuild
-    }
-}
-
 export function saveNewbuild(newbuild){
     return {
         type: actionsTypes.SAVE_NEWBUILD,
