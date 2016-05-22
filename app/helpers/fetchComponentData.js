@@ -3,7 +3,7 @@ import {graphql} from 'graphql';
 import schema from '../data/schema';
 
 
-export default function * fetchComponentData (
+export default function fetchComponentData (
     dispatch,
     components,
     params,
