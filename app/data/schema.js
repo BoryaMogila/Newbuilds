@@ -1,9 +1,8 @@
-import query from 'mysql-query-promise';
 import { Client } from 'elasticsearch';
 
 const client = new Client({
     host: 'localhost:9200'
-})
+});
 
 import {
     GraphQLSchema,

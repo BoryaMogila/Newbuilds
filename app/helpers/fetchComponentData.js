@@ -16,13 +16,14 @@ export default function * fetchComponentData (
             needs.push(...component.need);
         }
     }
+    let promises = [];
     for(let need of needs){
-        let data = yield graphql(schema, need.payload.query).then((data) => {
-            return {data};
-        });
-        dispatch(Object.assign({}, {
-            type: need.type,
-            payload: data
+        promises.push(graphql(schema, need.payload.query).then((data) => {
+            dispatch(Object.assign({}, {
+                type: need.type,
+                payload: {data}
+            }));
         }));
     }
+    return Promise.all(promises)
 }

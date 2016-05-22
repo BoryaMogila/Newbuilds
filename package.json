@@ -19,12 +19,13 @@
   "homepage": "https://github.com/BoryaMogila/Newbuilds#readme",
   "dependencies": {
     "axios": "^0.9.1",
-    "babel-cli": "^6.6.5",
     "babel-core": "^6.2.1",
     "babel-loader": "^6.2.0",
     "babel-preset-es2015": "^6.1.18",
+    "babel-preset-es2015-node5": "^1.2.0",
     "babel-preset-react": "^6.1.18",
     "babel-preset-stage-1": "^6.1.18",
+    "babel-register": "^6.9.0",
     "config": "^1.20.1",
     "cookie-parser": "^1.1.0",
     "crypto-js": "^3.1.5",
@@ -33,7 +34,6 @@
     "koa": "1.1.2",
     "koa-bodyparser": "2.0.0",
     "koa-ejs": "*",
-    "koa-generic-session": "^1.10.2",
     "koa-graphql": "^0.5.1",
     "koa-memcached": "^0.1.2",
     "koa-mount": "^1.3.0",
@@ -49,9 +49,7 @@
     "react-redux": "^4.0.0",
     "react-router": "^2.0.1",
     "redux": "^3.0.4",
-    "redux-form": "^4.2.2",
     "redux-promise": "^0.5.3",
-    "redux-wait": "0.0.3",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   }
