@@ -9,7 +9,11 @@ import routes from '../../src/routes';
 import reducers from '../../src/reducers';
 
 export default async function (ctx) {
-
+    if(ctx.request.path !== '/'){
+        ctx.redirect('/');
+        ctx.status = 302;
+        return;
+    }
     const location = ctx.originalUrl;
     if(location == '/favicon.ico') return;
     const createStoreWithMiddleware = applyMiddleware()(createStore);
