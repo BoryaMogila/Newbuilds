@@ -3,32 +3,32 @@ import { Component } from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router';
 
-import { getCities } from '../actions/index';
+import { getCities, getCount, changeCity, getNewbuilds} from '../actions/index';
 
-import CityLink from './CityLink'
+import CityLink from '../components/CityLink'
 
 class Cities extends Component {
     constructor(props){
         super(props);
 
-        this.selectCity = this.selectCity.bind(this);
-
     }
+
     componentWillMount(){
         if(!this.props.cities.length){
             this.props.getCities();
         }
     }
 
-    selectCity(cityId){
-        return this.props.city.cityId == cityId ? 'selected' : '';
-    }
     renderCities(){
         return  this.props.cities.map((city, index) => {
             city.cityId = index;
+            function changeCity (){
+                this.props.changeCity(city);
+                this.props.getNewbuilds(city.cityName, 25, 0, this.props.checked.value);
+                this.props.getCount(city.cityName, this.props.checked.value);
+            };
             return (
-                <CityLink key={index} city={city} selectedCity={this.props.city} />
-
+                <CityLink key={index} city={city} changeCity={changeCity.bind(this)} selectedCity={this.props.city} />
             );
         })
     }
@@ -49,8 +49,9 @@ class Cities extends Component {
 function mapStateToProps(state){
     return {
         cities: state.cities,
-        city: state.city
+        city: state.city,
+        checked: state.checked
     }
 
 }
-export default connect(mapStateToProps, {getCities})(Cities);
+export default connect(mapStateToProps, {getCities, getCount, getNewbuilds, changeCity})(Cities);
