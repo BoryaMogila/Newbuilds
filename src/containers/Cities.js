@@ -10,7 +10,6 @@ import CityLink from '../components/CityLink'
 class Cities extends Component {
     constructor(props){
         super(props);
-
     }
 
     componentWillMount(){
@@ -28,7 +27,11 @@ class Cities extends Component {
                 this.props.getCount(city.cityName, this.props.checked.value);
             };
             return (
-                <CityLink key={index} city={city} changeCity={changeCity.bind(this)} selectedCity={this.props.city} />
+                <CityLink key={index}
+                          cityId={city.cityId}
+                          cityName={city.cityName}
+                          changeCity={changeCity.bind(this)}
+                          selectedCityId={this.props.city.cityId} />
             );
         })
     }

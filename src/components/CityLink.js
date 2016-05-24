@@ -1,20 +1,24 @@
-import React from 'react';
-import { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 class CityLink extends Component {
     constructor(props) {
         super(props);
-        this.selectCity = this.selectCity.bind(this);
     }
+    static propTypes = {
+        cityName: PropTypes.string.isRequired,
+        selectedCityId: PropTypes.number.isRequired,
+        cityId: PropTypes.number.isRequired,
+        changeCity: PropTypes.func.isRequired,
+    };
 
-    selectCity(){
-        return this.props.city.cityId == this.props.selectedCity.cityId ? 'selected' : '';
-    }
+    selectCity = () => {
+        return this.props.cityId == this.props.selectedCityId ? 'selected' : '';
+    };
 
     render() {
         return (
-            <li className={this.selectCity()} key={this.props.city.cityId} onClick={this.props.changeCity}>
-                <a href="#">{this.props.city.cityName}</a>
+            <li className={this.selectCity()} onClick={this.props.changeCity}>
+                <a href="#">{this.props.cityName}</a>
             </li>
         );
     }
