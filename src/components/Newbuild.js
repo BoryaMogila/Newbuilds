@@ -17,7 +17,7 @@ export default class Newbuild extends Component {
     static propTypes = {
         saveNewbuild: PropTypes.func.isRequired,
         newbuild: PropTypes.shape({
-            newbuildId: PropTypes.string,
+            newbuildId: PropTypes.number,
             checked: PropTypes.number,
             changed: PropTypes.number,
             coment: PropTypes.string,
