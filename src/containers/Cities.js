@@ -21,7 +21,7 @@ class Cities extends Component {
     renderCities(){
         return  this.props.cities.map((city, index) => {
             city.cityId = index;
-            function changeCity (){
+            const changeCity = () => {
                 this.props.changeCity(city);
                 this.props.getNewbuilds(city.cityName, 25, 0, this.props.checked.value);
                 this.props.getCount(city.cityName, this.props.checked.value);
@@ -30,7 +30,7 @@ class Cities extends Component {
                 <CityLink key={index}
                           cityId={city.cityId}
                           cityName={city.cityName}
-                          changeCity={changeCity.bind(this)}
+                          changeCity={changeCity}
                           selectedCityId={this.props.city.cityId} />
             );
         })

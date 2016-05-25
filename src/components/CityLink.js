@@ -8,7 +8,7 @@ class CityLink extends Component {
         cityName: PropTypes.string.isRequired,
         selectedCityId: PropTypes.number.isRequired,
         cityId: PropTypes.number.isRequired,
-        changeCity: PropTypes.func.isRequired,
+        changeCity: PropTypes.func.isRequired
     };
 
     selectCity = () => {

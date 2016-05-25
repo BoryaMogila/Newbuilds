@@ -10,8 +10,6 @@ import Newbuild from './../components/Newbuild';
 export default class Newbuilds extends Component {
     constructor(props){
         super(props);
-
-        this.handleSelect = this.handleSelect.bind(this)
     }
     componentWillMount(){
         if(!this.props.count.pagesCount){
@@ -30,12 +28,12 @@ export default class Newbuilds extends Component {
             );
         })
     }
-    handleSelect(event, element){
+    handleSelect = (event, element) => {
         const limit = element.eventKey * 25;
         const offset = (element.eventKey - 1) * 25;
         this.props.selectPage(element.eventKey);
         this.props.getNewbuilds(this.props.city.cityName, limit, offset, this.props.checked.value);
-    }
+    };
     render() {
         return (
             <div>

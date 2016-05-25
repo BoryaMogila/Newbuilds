@@ -1,5 +1,4 @@
-import React from 'react';
-import { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 
 export default class Newbuild extends Component {
@@ -15,7 +14,18 @@ export default class Newbuild extends Component {
         this.changeComent = this.changeComent.bind(this);
         this.saveNewbuild = this.saveNewbuild.bind(this);
     }
-
+    static propTypes = {
+        saveNewbuild: PropTypes.func.isRequired,
+        newbuild: PropTypes.shape({
+            newbuildId: PropTypes.string,
+            checked: PropTypes.number,
+            changed: PropTypes.number,
+            coment: PropTypes.string,
+            name: PropTypes.string,
+            contact: PropTypes.string,
+            lunLink: PropTypes.string
+        })
+    };
     componentWillReceiveProps(nextProps){
         this.setState({
             checked: Number(nextProps.newbuild.checked),
