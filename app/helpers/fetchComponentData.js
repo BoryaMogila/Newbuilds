@@ -3,6 +3,10 @@ import {graphql} from 'graphql';
 import schema from '../data/schema';
 
 
+function isPromise(val) {
+    return val && typeof val.then === 'function';
+}
+
 export default function fetchComponentData (
     dispatch,
     components,
@@ -18,12 +22,26 @@ export default function fetchComponentData (
     }
     let promises = [];
     for(let need of needs){
-        promises.push(graphql(schema, need.payload.query).then((data) => {
-            dispatch(Object.assign({}, {
-                type: need.type,
-                payload: {data}
+        if(typeof need.then == 'function'){
+            promises.push(need.then(dispatch));
+        }
+        if(typeof need.payload.then == 'function'){
+            promises.push(need.payload.then((data) => {
+                dispatch(Object.assign({}, {
+                    type: need.type,
+                    payload: {data}
+                }));
             }));
-        }));
+        }
+        if(need.graphQl == true){
+            promises.push(graphql(schema, need.payload.query).then((data) => {
+                dispatch(Object.assign({}, {
+                    type: need.type,
+                    payload: {data}
+                }));
+            }));
+        }
+
     }
     return Promise.all(promises)
 }
